@@ -152,6 +152,16 @@ public class PcapReader implements Iterable<Packet> {
 		return (~sum) & 0xffff;
 	}
 
+	private String mac2String(byte[] pkt, int offset){
+		return String.format("%02X:%02X:%02X:%02X:%02X:%02X",
+				pkt[offset],
+				pkt[offset + 1],
+				pkt[offset + 2],
+				pkt[offset + 3],
+				pkt[offset + 4],
+				pkt[offset + 5]);
+	}
+
 	private int getUdpLength(byte[] packetData, int ipStart, int ipHeaderLen) {
 		int udpLen = PcapReaderUtil.convertShort(packetData, ipStart + ipHeaderLen + 4);
 		return udpLen;
@@ -173,10 +183,15 @@ public class PcapReader implements Iterable<Packet> {
         BigDecimal packetTimestampUsec = new BigDecimal(packetTimestamp + packetTimestampMicros / 1000000.0, tsUsecMc);
         packet.put(Packet.TIMESTAMP_USEC, packetTimestampUsec.doubleValue());
 
+        packet.put("ori_len", PcapReaderUtil.convertInt(pcapPacketHeader, 12));
+
 		long packetSize = PcapReaderUtil.convertInt(pcapPacketHeader, CAP_LEN_OFFSET, reverseHeaderByteOrder);
 		packetData = new byte[(int)packetSize];
 		if (!readBytes(packetData))
 			return packet;
+
+		packet.put(Packet.SRC_MAC, mac2String(packetData, 0));
+		packet.put(Packet.DST_MAC, mac2String(packetData, 6));
 
 		int ipStart = findIPStart(packetData);
 		if (ipStart == -1)
@@ -246,11 +261,11 @@ public class PcapReader implements Iterable<Packet> {
 			int payloadDataStart = ipStart + ipHeaderLen;
 			int payloadLength = totalLength - ipHeaderLen;
 			byte[] packetPayload = readPayload(packetData, payloadDataStart, payloadLength);
-			if (PROTOCOL_UDP == protocol || 
-			    PROTOCOL_TCP == protocol) {
+			if (PROTOCOL_UDP.equals(protocol) ||
+			    PROTOCOL_TCP.equals(protocol) ) {
 				packetPayload = buildTcpAndUdpPacket(packet, packetData, ipProtocolHeaderVersion, ipStart, ipHeaderLen, totalLength);
 
-				if (isReassembleTcp() && PROTOCOL_TCP == protocol) {
+				if (isReassembleTcp() && PROTOCOL_TCP.equals(protocol)) {
 					Flow flow = packet.getFlow();
 
 					if (packetPayload.length > 0) {
@@ -405,6 +420,8 @@ public class PcapReader implements Iterable<Packet> {
 
 		String src = PcapReaderUtil.convertAddress(packetData, ipStart + IP_SRC_OFFSET, 4);
 		packet.put(Packet.SRC, src);
+
+
 
 		String dst = PcapReaderUtil.convertAddress(packetData, ipStart + IP_DST_OFFSET, 4);
 		packet.put(Packet.DST, dst);

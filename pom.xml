@@ -56,8 +56,8 @@
 	<scm>
 		<connection>scm:git:git://github.com/RIPE-NCC/hadoop-pcap.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/RIPE-NCC/hadoop-pcap.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<distributionManagement>
 		<repository>
