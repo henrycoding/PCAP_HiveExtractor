@@ -1,6 +1,9 @@
 package net.ripe.hadoop.pcap;
 
 import com.google.common.base.Joiner;
+import com.sun.jna.Library;
+import com.sun.jna.Native;
+import com.sun.jna.Platform;
 import net.ripe.hadoop.pcap.packet.DnsPacket;
 import net.ripe.hadoop.pcap.packet.HttpPacket;
 import net.ripe.hadoop.pcap.packet.Packet;
@@ -20,6 +23,7 @@ import org.apache.http.io.SessionInputBuffer;
 import org.apache.http.io.SessionOutputBuffer;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
+import org.fusesource.jansi.internal.CLibrary;
 import org.xbill.DNS.*;
 
 import java.io.ByteArrayInputStream;
@@ -30,7 +34,16 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+
 public class XiaofeiPacketReader extends PcapReader {
+    public interface CLibrary extends Library {
+        CLibrary INSTANCE = (CLibrary)
+                Native.loadLibrary("add",
+                        CLibrary.class);
+
+        int jadd(int a, int b);
+    }
+
     public static final Log LOG = LogFactory.getLog(XiaofeiPacketReader.class);
     public static final int HTTP_PORT = 80;
     public static final String HEADER_PREFIX = "header_";
@@ -68,6 +81,7 @@ public class XiaofeiPacketReader extends PcapReader {
     @Override
     protected void processPacketPayload(Packet packet, final byte[] payload) {
         try {
+            packet.put("test", CLibrary.INSTANCE.jadd(1, 2));
 
             String dst = (String) packet.get(Packet.DST);
             String src = (String) packet.get(Packet.SRC);
@@ -93,7 +107,8 @@ public class XiaofeiPacketReader extends PcapReader {
                         int pos = s.indexOf("Host") + 4;
                         s = s.substring(pos);
                         s = s.substring(0, s.indexOf("\n"));
-                        packet.put("h", s);
+                        packet.put("host", s);
+                        packet.put(Packet.PROTOCOL, "HTTP");
                     } catch (Exception e) {
 
                     }
@@ -118,15 +133,20 @@ public class XiaofeiPacketReader extends PcapReader {
                     packet.put(DnsPacket.QNAME, convertRecordOwnerToString(msg.getQuestion()));
                     packet.put(DnsPacket.QTYPE, convertRecordTypeToInt(msg.getQuestion()));
                     packet.put(DnsPacket.ANSWER, convertRecordsToStrings(msg.getSectionArray(Section.ANSWER)));
-                    packet.put("h", msg.getSectionArray(Section.ANSWER)[0]);
+                    packet.put("host", msg.getSectionArray(Section.ANSWER)[0]);
                     packet.put(DnsPacket.AUTHORITY, convertRecordsToStrings(msg.getSectionArray(Section.AUTHORITY)));
                     packet.put(DnsPacket.ADDITIONAL, convertRecordsToStrings(msg.getSectionArray(Section.ADDITIONAL)));
+                    packet.put(Packet.PROTOCOL, "DNS");
+
                 } catch (Exception e) {
                     // If we cannot decode a DNS packet we ignore it
                 }
             }
-        }catch (Exception e){
 
+            packet.put("APP_TYPE", "NONE");
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
