@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ba899266-e7ac-473c-970a-110c30ace868" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hadoop-pcap-lib/src/main/java/net/ripe/hadoop/pcap/PcapReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/hadoop-pcap-lib/src/main/java/net/ripe/hadoop/pcap/PcapReader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hadoop-pcap-lib/src/main/java/net/ripe/hadoop/pcap/XiaofeiPacketReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/hadoop-pcap-lib/src/main/java/net/ripe/hadoop/pcap/XiaofeiPacketReader.java" afterDir="false" />
-    </list>
+    <list default="true" id="ba899266-e7ac-473c-970a-110c30ace868" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/hadoop-pcap-lib/target/" />
     <ignored path="$PROJECT_DIR$/hadoop-pcap-serde/target/" />
@@ -315,7 +310,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547795204737" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547795205928" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -357,16 +352,15 @@
       <workItem from="1547715623134" duration="56000" />
       <workItem from="1547715813548" duration="235000" />
       <workItem from="1547716063245" duration="1335000" />
-      <workItem from="1547786423176" duration="7263000" />
+      <workItem from="1547786423176" duration="7279000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31560000" />
+    <option name="totallyTimeSpent" value="31576000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22520107" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -377,7 +371,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.33994335" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.33994335" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
