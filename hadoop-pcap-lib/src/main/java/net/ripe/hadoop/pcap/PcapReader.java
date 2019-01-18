@@ -190,8 +190,8 @@ public class PcapReader implements Iterable<Packet> {
 		if (!readBytes(packetData))
 			return packet;
 
-		packet.put(Packet.SRC_MAC, mac2String(packetData, 0));
-		packet.put(Packet.DST_MAC, mac2String(packetData, 6));
+		packet.put(Packet.SRC_MAC, mac2String(packetData, 6));
+		packet.put(Packet.DST_MAC, mac2String(packetData, 0));
 
 		int ipStart = findIPStart(packetData);
 		if (ipStart == -1)

@@ -29,10 +29,8 @@ import org.xbill.DNS.*;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 
 public class XiaofeiPacketReader extends PcapReader {
@@ -133,10 +131,11 @@ public class XiaofeiPacketReader extends PcapReader {
                     packet.put(DnsPacket.QNAME, convertRecordOwnerToString(msg.getQuestion()));
                     packet.put(DnsPacket.QTYPE, convertRecordTypeToInt(msg.getQuestion()));
                     packet.put(DnsPacket.ANSWER, convertRecordsToStrings(msg.getSectionArray(Section.ANSWER)));
-                    packet.put("host", msg.getSectionArray(Section.ANSWER)[0]);
+                    packet.put("host", msg.getSectionArray(Section.ANSWER)[0].getName());
                     packet.put(DnsPacket.AUTHORITY, convertRecordsToStrings(msg.getSectionArray(Section.AUTHORITY)));
                     packet.put(DnsPacket.ADDITIONAL, convertRecordsToStrings(msg.getSectionArray(Section.ADDITIONAL)));
                     packet.put(Packet.PROTOCOL, "DNS");
+                    packet.put("domains", convertRecordToDomainArray(msg.getSectionArray(Section.ANSWER)));
 
                 } catch (Exception e) {
                     // If we cannot decode a DNS packet we ignore it
@@ -149,6 +148,17 @@ public class XiaofeiPacketReader extends PcapReader {
             e.printStackTrace();
         }
     }
+
+    private List<String> convertRecordToDomainArray(Record[] sectionArray) {
+        ArrayList<String> arrayList = new ArrayList<String>(sectionArray.length);
+        for(Record i : sectionArray){
+            if(i.getType() == Type.A){
+                arrayList.add(i.getName() + "#" + i.rdataToString());
+            }
+        }
+        return arrayList;
+    }
+
 
     private String convertRecordToString(Record record) {
         if (record == null)
